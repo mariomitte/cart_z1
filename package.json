@@ -1,0 +1,20 @@
+{
+  "name": "website",
+  "version": "0.2.2",
+  "description": "The goal of the exercise is to create a checkout system",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "website",
+    "checkout",
+    "zadatak",
+    "mitte"
+  ],
+  "author": "mitte",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "a17t": "^0.2.9",
+    "@fortawesome/fontawesome-free": "^5.13.1"
+  }
+}

@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="{% static 'assets/favicon.ico' %}">
+  <title>{% block head_title %}Django website{% endblock %} | {{ website.title }}</title>
+  {% include 'a17t/includes/head.html' %}
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body class="min-h-full" style="overflow: initial;">
+  {% block body %}
+      {% block header %}
+      <div class="w-full bg-cover bg-center {% if section == 'home' %}header-wrapper header__home--image{% elif section == 'about' %}header-wrapper header__about--image{% endif %}">
+        <div class="flex flex-col-reverse items-center h-full {% if section == 'home' %}header-wrapper__overlay{% endif %}">
+          {% include "website/items/navigation.html" with website=website %}
+          {% block hero %}{% endblock %}
+        </div>
+      </div>
+    {% endblock header %}
+    <main>
+      <div class="w-full max-w-screen-xl mx-auto flex justify-start items-center">
+        <div class="mt-12 pl-4 lg:pl-8 xl:pl-0">
+          {% block content_title %}{% endblock %}
+        </div>
+      </div>
+      {% block content %}{% endblock %}
+    </main>
+  {% endblock %}
+  {% block extra_body %}{% endblock %}
+  {% include "website/items/footer.html" %}
+  <script src="{% static 'assets/js/website.js' %}"></script>
+</body>
+
+</html>

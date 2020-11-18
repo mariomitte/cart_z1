@@ -1,0 +1,46 @@
+<!-- Stupid-simple Django HTML template, for example -->
+
+<h1>New Order id {{ order.id }} from {{ order.customer.user.email }}!</h1>
+
+<h1>Here are the details of the order you have just made!</h1>
+
+
+<h2>Personal details</h2>
+<p>
+  First name: {{ order.address.first_name }}<br>
+  Last name: {{ order.address.last_name }}<br>
+  Address name: {{ order.address.address }}<br>
+  Postal code: {{ order.address.postal_code }}<br>
+  City: {{ order.address.city }}<br>
+  Country: {{ order.address.country }}<br>
+  Order #: {{ order.id }}<br>
+  Currency: {{order.customer.currency}}<br>
+  Paid: {{ order.paid }}
+</p>
+
+<table>
+  <tr>
+    <td>Item</td>
+    <td>SKU</td>
+    <td>Price</td>
+    <td>Subtotal</td>
+  </tr>
+
+  {% for item in products %}
+    <tr>
+      <td>{{ item.product.name }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>{{order.customer.currency}} {{ item.product.price }}</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Taxes:</td>
+      <td>{{ item.taxes }}</td>
+    </tr>
+  {% endfor %}
+  <tr>
+    <td></td>
+    <td>Total price:</td>
+    <td>{{order.customer.currency}} {{ order.get_total_cost }}</td>
+  </tr>
+</table>

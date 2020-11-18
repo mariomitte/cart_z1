@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load i18n a17t_tags shop_tags %}
+
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+  <div class="my-12 mx-4 lg:mx-0">
+    <div class="product__header w-full max-w-screen-xl mx-auto flex justify-start items-center">
+      <div class="pl-4 lg:pl-8 xl:pl-0">
+        <a href="{% url 'cart:cart_detail' %}" class="uppercase flex items-center font-semibold">
+          <svg width="20" height="10" viewBox="0 0 20 10" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr-4">
+            <path d="M2.73859 4.30914H19.75V5.59286H2.63961L6.06986 8.98864L5.17449 9.875L0.25 5L5.17449 0.125L6.06986 1.01136L2.73859 4.30914Z" fill="#88DD9B"></path>
+          </svg>
+          return to update your cart items
+        </a>
+      </div>
+    </div>
+
+    <div class="flex justify-center">
+      <div class="pl-4 pt-8 w-full max-w-screen-lg">
+        {% section_heading 'Checkout' %}
+      </div>
+    </div>
+
+    <div class="px-4 max-w-screen-lg w-full flex flex-col-reverse md:flex-row flex-wrap justify-center m-auto">
+      <form method="POST" enctype="multipart/form-data" class="w-full md:w-1/2 md:pr-8">
+        {% csrf_token %}
+        {{ form_address|a17t }}
+        {{ form_card|a17t }}
+        <p><input type="submit" value="Place order" class="button ~positive !high p-4 w-full flex justify-center"></p>
+      </form>
+      <hr class='sep'>
+      <div class="w-full md:w-1/2">
+        <div class="card ~neutral !low content lg:ml-8 p-0">
+          <h3 class="m-4">Your order</h3>
+          <ul class="py-4">
+            {% for item in cart %}
+              <li>
+                {{ item.quantity }}x {{ item.product.name }}
+                <span>{{ currency }} {{ item.total_price|floatformat:2 }}</span>
+              </li>
+            {% endfor %}
+            {% if cart.coupon %}
+              <li>
+                "{{ cart.coupon.code }}" ({{ cart.coupon.discount }}% off)
+                <span class="neg">- {{ currency }} {{ cart.get_discount|floatformat:2 }}<span>
+              </li>
+            {% endif %}
+          </ul>
+          <section class="section ~info p-4">
+            Total: {{ currency }} {{ cart.get_total_price_after_discount|floatformat:2 }}
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

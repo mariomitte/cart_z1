@@ -1,0 +1,13 @@
+{% extends "account/dashboard/base.html" %}
+
+
+{% block page_title %}{% endblock %}
+
+{% block dashboard %}
+<div class="w-full flex items-center justify-center">
+  <div class="w-full card ~neutral !low max-w-lg content">
+    {% block card %}
+    {% endblock %}
+  </div>
+</div>
+{% endblock %}

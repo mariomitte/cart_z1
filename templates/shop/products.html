@@ -1,0 +1,10 @@
+{% load shop_tags %}
+
+<section class="max-w-screen-xl w-full mb-12 overflow-hidden px-4 xl:px-0 {% if first == True %}overlap{% endif %}">
+  {% section_heading preview_title first=first %}
+  <div class="product-grid flex flex-nowrap sm:flex-wrap {% if section != 'store' %}product-grid--draggable{% endif %}">
+    {% for preview in products %}
+      {% include "website/items/card.html" with preview=preview %}
+    {% endfor %}
+  </div>
+</section>

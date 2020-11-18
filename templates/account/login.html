@@ -1,0 +1,22 @@
+{% extends "account/base.html" %}
+
+{% load i18n a17t_tags shop_tags %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block content_title %}{% section_heading 'Sign in' %}{% endblock %}
+
+{% block card %}
+<form class="login" method="POST" action="{% url 'account:login' %}">
+  <aside class="aside ~info mb-4">
+    <p>Welcome to {{request.site.name|default:site_name}}, {{ website.description }}.</p>
+  </aside>
+  {% csrf_token %}
+  {{ form|a17t }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="next" value="{{ next }}" />
+  {% endif %}
+  <button class="button ~urge !high mr-2" type="submit">{% trans "Sign In" %}</button>
+  <a href="{% url 'account:reset_password' %}" class="button ~neutral mr-2">{% trans "Reset Password" %}</a>
+  <a href="{% url 'account:signup' %}" class="button ~neutral">{% trans "Sign Up" %}</a>
+</form>
+{% endblock %}

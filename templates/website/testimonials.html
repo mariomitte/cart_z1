@@ -1,0 +1,24 @@
+{% load website_tags %}
+
+{% active_testimonials as testimmonials %}
+
+<section class="max-w-screen-xl overflow-hidden w-full mb-12 px-4 xl:px-0">
+  {% section_heading 'Testimonials' %}
+  <div class="mb-8 px-4 w-full">
+    <div class="testimonial section ~neutral !important p-12 flex flex-col sm:flex-row sm:flex-wrap">
+      {% for testimonial in testimmonials %}
+      <div class="flex-1">
+        <svg class="mb-8" style="width: fit-content;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M0 14.1818L4.57143 0H9.52381L5.71429 13.2893H9.52381V24H0V14.1818ZM14.4762 14.1818L19.0476 0H24L20.1905 13.2893H24V24H14.4762V14.1818Z" fill="#88DD9B"/>
+        </svg>
+        <div class="mb-8 text-xl text-neutral-700">{{ testimonial.text }}</div>
+        <div class="">
+          <span class="uppercase text-lg font-bold text-neutral-700 mt-auto">{{ testimonial.author }},</span>
+          <span class="uppercase subheading">{{ testimonial.location }}</span>
+        </div>
+      </div>
+      <div class="quotes__separator"></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+<footer id="footer-item" class="section ~neutral !high w-full flex flex-col items-center">
+  <div class="flex max-w-screen-xl w-full flex-col items-center justify-center sm:flex-row sm:items-start sm:justify-between pt-24 sm:py-24 sm:px-4">
+    <div class="flex flex-col">
+      <a href="/">
+        <picture>
+          <img src="{{ website.logo.url }}" alt="{{ website.title }}" class="footer__logo">
+        </picture>
+      </a>
+      <ul class="footer__nav flex pt-4 font-bold">
+        <li>
+          <a href="{% url 'shop:shop_list' %}">
+            Store
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'website:about' %}">
+            About
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'website:faq' %}/">
+            FAQ
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="footer__legal-notice text-sm sm:text-lg lg:text-xl font-bold mt-12 mb-4 md:my-0">
+      Copyright 2020 Kodius Inc. All rights reserved.
+    </div>
+  </div>
+</footer>

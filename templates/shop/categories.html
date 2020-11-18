@@ -1,0 +1,22 @@
+<nav class="store__nav section ~neutral !normal mr-4 mb-12 md:mb-12">
+  <ul class="py-4 sm:py-3 pl-2 sm:pl-4 lg:pl-2 mr-4 flex flex-col flex-wrap sm:flex-row lg:flex-col">
+    {% if category %}
+      <li class="store__nav-item mx-2 my-3">
+        <a href="{% url 'shop:shop_list' %}" class="text-base md:text-sm text-base font-bold">
+          <div class="store__nav__link-item">
+            All products
+          </div>
+        </a>
+      </li>
+    {% endif %}
+    {% for category in categories %}
+      <li class="store__nav-item mx-2 my-3">
+        <a href="{{ category.get_absolute_url }}" class="text-base md:text-sm text-base font-bold">
+          <div class="store__nav__link-item">
+            {{ category.name }}
+          </div>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

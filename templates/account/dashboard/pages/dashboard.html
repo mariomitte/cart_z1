@@ -1,0 +1,127 @@
+{% extends "account/dashboard/base.html" %}
+{% load i18n shop_tags %}
+
+
+{% block page_title %}
+  {% section_heading title='Dashboard' dashboard=customer %}
+{% endblock %}
+
+{% block dashboard %}
+<div class="w-full md:w-1/2 flex flex-col md:pr-2">
+  <div class="w-full content section ~neutral !normal p-4 mb-4">
+    <h3>{% trans 'Your Orders' %}</h3>
+    {% with order_count=orders.count %}
+    {% if not orders.count %}
+      <p>You have not made an order.</p>
+    {% else %}
+      <p>You have made <bold>{{ order_count }}</bold> order{{ order_count|pluralize }}.</p>
+    {% endif %}
+    {% endwith %}
+  </div>
+  {% if customer %}
+  <div class="w-full content">
+    {% for order in orders %}
+      <div class="section ~neutral !normal p-4 mb-4">
+        <div class="flex flex-col">
+          <h3>{% model_name order %} ID: {{ order.id }}</h3>
+          <span>{% field_name order 'created' %}: {{ order.created }}</span>
+          <span>{% field_name order 'paid' %}: {{ order.paid }}</span>
+        </div>
+        <div class="mt-4">
+          <h4>Products:</h4>
+          {% get_order_item_detail order_id=order.id as order_items %}
+          {% for order_item in order_items %}
+            <div class="m-4 flex flex-col">
+              {% with order_item.product as in_product %}
+              <span>{{ in_product.name }}</span>
+              <div class="flex flex-col">
+                <span class="pl-4">{% field_name in_product 'price' %}: {{ in_product.price }}</span>
+                <span class="pl-4">{% field_name order_item 'quantity' %}: {{ order_item.quantity }}</span>
+                <span class="pl-4">{% field_name order_item 'quantity' %}: {{ order_item.quantity }}</span>
+                <span class="pl-4">Item Cost: {{ order_item.get_cost }}</span>
+              </div>
+              {% endwith %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="flex flex-col mt-4 ml-4">
+          {% if order.coupon %}
+          <span>{% field_name order 'coupon' %}: {{ order.coupon }},</span>
+          <span>{% field_name order 'discount' %}: {{ order.discount }}%</span>
+          {% endif %}
+          <h4>Total cost: {{ order.get_total_cost|floatformat:2 }}</h4>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+<div class="w-full md:w-1/2 flex flex-col justify-start pb-8 md:pl-2">
+  <div class="w-full content section ~neutral !normal p-4 mb-4">
+    <div class="flex justify-between">
+      <h3>{% trans 'Customer Profile' %}</h3>
+      <a href="{% url 'account:dashoard_customer_edit' %}" class="button p-0" type="submit">
+        <span class='chip ~urge !high'>{% trans "Update" %}</span>
+      </a>
+    </div>
+    {% if customer %}
+    <div class="flex flex-col">
+      <span>{% field_name customer 'user' %}: {{ customer.user }}</span>
+      <span>{% field_name customer 'birth_date' %}: {{ customer.birth_date }}</span>
+      <span>{% field_name customer 'gender' %}: {{ customer.gender }}</span>
+      <span>{% field_name customer 'contact' %}: {{ customer.contact }}</span>
+      <span>{% field_name customer 'photo' %}: {{ customer.photo }}</span>
+      <span>{% field_name customer 'currency' %}: {{ customer.currency }}</span>
+    </div>
+    {% endif %}
+  </div>
+  <div class="w-full content section ~neutral !normal p-4 mb-4">
+    <div class="flex justify-between">
+      <h3>{% trans 'Customer Information' %}</h3>
+      <a href="{{ address.get_absolute_url }}" class="button p-0" type="submit">
+        <span class='chip ~urge !high'>{% trans "Update" %}</span>
+      </a>
+    </div>
+    {% if address %}
+    <div class="flex flex-col">
+      <span>{% field_name address 'first_name' %}: {{ address.first_name }}</span>
+      <span>{% field_name address 'last_name' %}: {{ address.last_name }}</span>
+      <span>{% field_name address 'address' %}: {{ address.address }}</span>
+      <span>{% field_name address 'postal_code' %}: {{ address.postal_code }}</span>
+      <span>{% field_name address 'city' %}: {{ address.city }}</span>
+      <span>{% field_name address 'country' %}: {{ address.country }}</span>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="w-full content section ~neutral !normal p-4 mb-4">
+    <div class="flex justify-between">
+      <h3>{% trans 'Credit Card Information' %}</h3>
+      <a href="{{ credit_card.get_absolute_url }}" class="button p-0" type="submit">
+        <span class='chip ~urge !high'>{% trans "Update" %}</span>
+      </a>
+    </div>
+    {% if credit_card %}
+    <div class="flex flex-col">
+      <span>{% field_name credit_card 'credit_card_number' %}: {{ credit_card.credit_card_number }}</span>
+      <span>{% field_name credit_card 'credit_card_expiration_date' %}: {{ credit_card.credit_card_expiration_date }}</span>
+      <span>{% field_name credit_card 'credit_card_cvc' %}: {{ credit_card.credit_card_cvc }}</span>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="w-full content section ~neutral !normal p-4 mb-4">
+    <div class="flex justify-between">
+      <h3>{% trans 'User Information' %}</h3>
+      <a href="{% url 'account:dashboard_user_password_edit' %}" class="button p-0" type="submit">
+        <span class='chip ~urge !high'>{% trans "Update" %}</span>
+      </a>
+    </div>
+    {% with request.user as user %}
+    <div class="flex flex-col">
+      <span>{% field_name user 'email' %}: {{ user.email }}</span>
+    </div>
+    {% endwith %}
+  </div>
+</div>
+{% endblock %}

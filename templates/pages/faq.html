@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  <main class="flex flex-col items-center">
+    <section class="max-w-screen-xl w-full h-full header-wrapper px-8 flex items-center flex-col justify-center text-center">
+      <h1 class="max-w-screen-md font-bold text-3xl md:text-6xl text-center pb-10" style="margin-top: -150px;">Behold our FAQ</h1>
+      <div class="content__row static-header__content mt-0 sm:mt-8 px-4">
+        <p class="font-normal text-lg sm:text-2xl text-neutral-600">All right, friends. Let’s do this. This section will cover basic, frequently asked questions for e-commerce merchants.</p>
+      </div>
+    </section>
+    <div class="min-h-full w-full flex flex-col justify-center items-center pb-12" style="margin-top: -150px;">
+      {% include "website/faq_section.html" %}
+      {% include "website/faq_section.html" %}
+      {% include "website/faq_section.html" %}
+    </div>
+  </main>
+{% endblock content %}

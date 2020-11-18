@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load shop_tags %}
+
+
+{% block head_title %}Store | {{ website.title }}{% endblock %}
+
+{% block content %}
+<div class="flex flex-col items-center px-0 overflow-visible">
+  <div class="flex max-w-screen-xl w-full justify-start my-12 pl-4 md:pl-8 md:pl-12 lg:pl-2">
+    <h1 class="heading capitalize text-4xl md:text-5xl font-bold pt-4 md:pt-8">
+      {% if not category %}
+        All products
+      {% else %}
+        {{ category.name }}
+      {% endif %}
+    </h1>
+  </div>
+
+  <div class="max-w-screen-xl w-full justify-start lg:mt-8">
+    <div class="flex flex-col lg:flex-row pl-0 pt-2 md:pt-8">
+      {% include "shop/categories.html" with category=category categories=categories %}
+      <section class="max-w-screen-lg mt-0 mb-12">
+        <div class="product-grid flex flex-wrap">
+          {% for product in products %}
+            {% include "website/items/card.html" with preview=product %}
+          {% endfor %}
+        </div>
+      </section>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

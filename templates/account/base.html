@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="product flex flex-col items-center pb-24">
+    {% block main %}
+      <div class="card ~neutral !low max-w-lg content">
+          {% block card %}
+          {% endblock %}
+      </div>
+    {% endblock %}
+  </div>
+{% endblock %}

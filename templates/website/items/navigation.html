@@ -1,0 +1,84 @@
+<nav class="header w-full max-w-screen-xl mx-auto {% if section == 'home' or section == 'about' %}header-absolute{% else %}header-relative{% endif %} pt-8 md:pt-12">
+  <div class="px-4 sm:px-8 xl:px-0">
+    <div class="nav {% if section == 'home' %}nav--light{% else %}nav--dark{% endif %} md:flex md:items-center md:justify-between">
+      <div class="flex justify-between items-center">
+        <button type="button" class="menu__return menu__return--hide px-2 py-1" aria-label="toggle menu">
+          <span class="icon">
+              <i class="fas fa-long-arrow-alt-left fa-lg text-neutral-800"></i>
+          </span>
+        </button>
+        <a href="{% url 'website:home' %}">
+          <img src="{{ website.logo.url }}" alt="{{ website.title }}" class="nav__logo-image">
+        </a>
+
+        <!-- Mobile menu button -->
+        <div class="flex md:hidden">
+          {% include "cart/items/navigation_button_store.html" with className='mobile' %}
+          <button type="button" class="hamburger-mobile hamburger--show p-1" aria-label="toggle menu">
+            <svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="hamburger__icon-path" fill-rule="evenodd" clip-rule="evenodd" d="M0 1.00049C0 0.448204 0.447715 0.000488281 1 0.000488281H23C23.5523 0.000488281 24 0.448204 24 1.00049C24 1.55277 23.5523 2.00049 23 2.00049H1C0.447716 2.00049 0 1.55277 0 1.00049ZM0 8.00049C0 7.4482 0.447715 7.00049 1 7.00049H13C13.5523 7.00049 14 7.4482 14 8.00049C14 8.55277 13.5523 9.00049 13 9.00049H1C0.447716 9.00049 0 8.55277 0 8.00049ZM1 14.0005C0.447715 14.0005 0 14.4482 0 15.0005C0 15.5528 0.447715 16.0005 1 16.0005H16C16.5523 16.0005 17 15.5528 17 15.0005C17 14.4482 16.5523 14.0005 16 14.0005H1Z" fill="white"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
+      <div class="shop__navigation-links hidden md:flex">
+        <a href="{% url 'shop:shop_list' %}" class="block mt-2 md:mt-0 text-base text-2xl font-bold hover:text-blue-600">Store</a>
+        <a href="{% url 'website:about' %}" class="block mx-8 mt-2 md:mt-0 text-base text-2xl font-bold hover:text-blue-600">About</a>
+        <a href="{% url 'website:faq' %}" class="block mt-2 md:mt-0 text-base text-2xl font-bold hover:text-blue-600">FAQ</a>
+      </div>
+
+      <div class="hidden md:flex md:items-center">
+        {% include "cart/items/navigation_button_store.html" %}
+        <button type="button" class="hamburger hamburger--show p-1" aria-label="toggle menu">
+          <svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="hamburger__icon-path" fill-rule="evenodd" clip-rule="evenodd" d="M0 1.00049C0 0.448204 0.447715 0.000488281 1 0.000488281H23C23.5523 0.000488281 24 0.448204 24 1.00049C24 1.55277 23.5523 2.00049 23 2.00049H1C0.447716 2.00049 0 1.55277 0 1.00049ZM0 8.00049C0 7.4482 0.447715 7.00049 1 7.00049H13C13.5523 7.00049 14 7.4482 14 8.00049C14 8.55277 13.5523 9.00049 13 9.00049H1C0.447716 9.00049 0 8.55277 0 8.00049ZM1 14.0005C0.447715 14.0005 0 14.4482 0 15.0005C0 15.5528 0.447715 16.0005 1 16.0005H16C16.5523 16.0005 17 15.5528 17 15.0005C17 14.4482 16.5523 14.0005 16 14.0005H1Z" fill="white"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div>
+      <!-- Menu items of menu or store -->
+      <div class="hamburger__content hamburger__content--closed flex flex-col justify-center items-center">
+        <div class="account__mobile_items block p-0 flex flex-row justify-center my-4 w-full mb-12">
+          {% if user.is_authenticated %}
+            <a href="{% url 'account:dashboard' %}" class='button ~positive !high px-4 button__adds text-base font-semibold mr-1'>Dashboard</a>
+            <a href="{% url 'account:logout' %}" class='button ~positive !high px-4 button__adds text-base font-semibold mr-1'>Logout</a>
+          {% else %}
+            <a href="{% url 'account:login' %}" class='button ~positive !high px-4 button__adds text-base font-semibold mr-1'>Login</a>
+          {% endif %}
+          {% with total_items=cart|length %}
+            {% if total_items > 0 %}
+              <a href="{% url 'cart:cart_detail' %}" class='button ~positive !high px-4 button__adds text-base font-semibold mr-1'>My Cart</a>
+            {% endif %}
+          {% endwith %}
+        </div>
+        <ul class="hamburger__nav">
+          <li class="hamburger__nav-item">
+            <a href="{% url 'shop:shop_list' %}" class="hamburger__nav-link">Store</a>
+          </li>
+          <li class="hamburger__nav-item">
+            <a href="{% url 'website:about' %}" class="hamburger__nav-link">About</a>
+          </li>
+          <li class="hamburger__nav-item">
+            <a href="{% url 'website:faq' %}" class="hamburger__nav-link">FAQ</a>
+          </li>
+        </ul>
+      </div>
+      {% include "cart/items/navigation_menu.html" %}
+    </div>
+    {% if messages %}
+      <div id="message">
+        {% for message in messages %}
+          <div id="message-{{ forloop.counter }}" class="card {{message.tags}} !high w-full mt-8 w-full flex items-center justify-between">
+            <span>{{message}}</span>
+            <div id="close-message-{{ forloop.counter }}" class="close-message button icon">
+              <i class="fas fa-times"></i>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</nav>

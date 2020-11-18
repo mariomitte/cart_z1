@@ -1,0 +1,36 @@
+{% load static a17t_tags shop_tags %}
+
+
+{% if coupons %}
+  <div class="px-4 max-w-screen-lg lg:px-0 w-full flex flex-col m-auto mb-12">
+    <div class="w-full content flex flex-col">
+        {% for item in coupons %}
+        {% get_coupon_value_by_id item as coupon %}
+        <div class="items-baseline flex justify-between px-4">
+          <p>"{{ coupon.code }}" coupon ({{ coupon.discount }}% off)</p>
+          <div class="flex flex-row items-center">
+            <p>- {{ currency }} {{ coupon.discount|floatformat:2 }}%</p>
+            <form action="{% url 'coupons:coupon_remove' item %}" method="POST" class="ml-4">
+              {% csrf_token %}
+              <input type="submit" value="Remove" class="button ~critical !high">
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+
+<div class="px-4 max-w-screen-lg lg:px-0 w-full flex flex-col m-auto mb-12">
+  <div class="w-full content flex flex-col">
+    <div class="items-baseline flex justify-end px-4">
+      <p class="pr-4">Subtotal:</p>
+      <p>{{ currency }} {{ cart.get_total_price|floatformat:2 }}</p>
+    </div>
+    <div class="items-baseline section ~neutral !high flex justify-end p-4">
+      <p class="pr-4">Total:</p>
+      <p>{{ currency }} {{ cart.get_total_price_after_discount|floatformat:2 }}</p>
+    </div>
+  </div>
+</div>

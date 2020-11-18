@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static a17t_tags shop_tags %}
+
+{% block head_title %}Your shopping cart{% endblock %}
+
+
+{% block content %}
+<div class="max-w-screen-lg overflow-x-auto px-4 lg:px-0 mt-4 mb-12 w-full m-auto">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Remove</th>
+        <th>Unit price</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart %}
+      {% with product=item.product %}
+      <tr>
+        <td>
+          <a class="card bg-neutral-500 thumbnail__table-image" href="{{ product.get_absolute_url }}">
+            <img class="w-full h-full" src="{% get_product_thumbnail product %}">
+          </a>
+        </td>
+        <td>{{ product.name }}</td>
+        <td>
+          <form action="{% url 'cart:cart_add' product.id %}" method="POST">
+            {% csrf_token %}
+            {{ item.update_quantity_form.quantity }}
+            {{ item.update_quantity_form.override }}
+            <input type="submit" value="Update" class="button ~neutral !high">
+          </form>
+        </td>
+        <td>
+          <form action="{% url 'cart:cart_remove' product.id %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="Remove" class="button ~critical !high">
+          </form>
+        </td>
+        <td>{{ currency }} {{ item.price }}</td>
+        <td>{{ currency }} {{ item.total_price }}</td>
+      </tr>
+      {% endwith %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% get_coupons %}
+
+{% if cart %}
+<div class="px-4 max-w-screen-lg lg:px-0 w-full flex flex-col m-auto mb-12">
+  <div class="content card ~neutral !low my-8">
+    <h4>Apply a coupon:</h4>
+    <form method="POST" action="{% url 'coupons:apply' %}">
+      {% csrf_token %}
+      {{ coupon_apply_form|a17t }}
+      <input type="submit" value="Apply" class="button ~positive !high">
+    </form>
+  </div>
+  <div class="flex flex-col flex-col-reverse sm:flex-row sm:justify-end">
+    <a href="{% url 'shop:shop_list' %}" class="button ~low !high">Continue shopping</a>
+    <a href="{% url 'orders:order_create' %}" class="button ~positive !high px-4">Checkout</a>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}
