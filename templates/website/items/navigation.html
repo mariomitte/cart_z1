@@ -46,7 +46,10 @@
             <a href="{% url 'account:dashboard' %}" class='button ~positive !high px-4 button__adds text-base font-semibold mr-1'>Dashboard</a>
             <a href="{% url 'account:logout' %}" class='button ~positive !high px-4 button__adds text-base font-semibold mr-1'>Logout</a>
           {% else %}
-            <a href="{% url 'account:login' %}" class='button ~positive !high px-4 button__adds text-base font-semibold mr-1'>Login</a>
+            <div class="flex flex-row items-center">
+              <a href="{% url 'account:login' %}" class='button ~positive !high px-4 button__adds text-base font-semibold mr-1'>Login</a>
+              <a href="{% url 'account:signup' %}" class='button ~positive !high px-4 button__adds text-base font-semibold mr-1'>Signup</a>
+            </div>
           {% endif %}
           {% with total_items=cart|length %}
             {% if total_items > 0 %}
