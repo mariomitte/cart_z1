@@ -38,3 +38,15 @@
 </body>
 
 </html>
+
+<script type="text/javascript">
+  function setHeaderImage() {
+    let headerItem = document.querySelector('.header__home--image')
+
+    const image = "{{ website.header_image.url }}"
+
+    if (headerItem !== null ) headerItem.style.backgroundImage = `url(${image})`;
+  }
+
+  docReady(setHeaderImage());
+</script>

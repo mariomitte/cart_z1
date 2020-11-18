@@ -259,7 +259,6 @@ main {
 /* HEADER AND HERO SECTION */
 
 .header__home--image {
-  background-image: url(/media/website/header.jpg);
   background-repeat: no-repeat;
   background-size: cover;
 }
