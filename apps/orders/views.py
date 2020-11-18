@@ -31,21 +31,17 @@ def order_create(request):
         else:
             return redirect('shop:shop_list')
 
-    try:
-        if not request.user.is_anonymous:
-            email = request.user.email
-            customer = user.customer
-            fill_form_address = ShippingAddress.objects.get(email=customer.user.email)
-            fill_form_card = customer.creditcard_set.get(customer=customer)
-    except ShippingAddress.DoesNotExist:
+    if user.is_anonymous:
         email = None
-        fill_form_address = None
-        fill_form_card = None
 
     if request.method == 'POST':
+        if user.is_anonymous:
+            form_address_obj = ShippingAddressForm(data=request.POST)
+            form_card_obj = CreditCardEditForm(data=request.POST)
+        else:
+            form_address_obj = ShippingAddressForm(data=request.POST, instance=fill_form_address)
+            form_card_obj = CreditCardEditForm(data=request.POST, instance=fill_form_card)
 
-        form_address_obj = ShippingAddressForm(data=request.POST, instance=fill_form_address)
-        form_card_obj = CreditCardEditForm(data=request.POST, instance=fill_form_card)
         if form_address_obj.is_valid() and form_card_obj.is_valid():
             form_address_obj.save()
 
@@ -98,6 +94,9 @@ def order_create(request):
             form_card = CreditCardEditForm()
         else:
             try:
+                customer = user.customer
+                fill_form_address = ShippingAddress.objects.get(email=customer.user.email)
+                fill_form_card = customer.creditcard_set.get(customer=customer)
                 form_address = ShippingAddressForm(instance=fill_form_address)
                 form_card = CreditCardEditForm(instance=fill_form_card)
                 if fill_form_address.submitted:
