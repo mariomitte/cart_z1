@@ -31,6 +31,7 @@ class Website(models.Model):
     description = models.CharField(max_length=settings.WEBSITE_MODEL_FIELD_LENGTH, null=True, blank=True)
     logo = models.ImageField(upload_to='website')
     header_image = models.ImageField(upload_to='website')
+    created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ('-created',)
