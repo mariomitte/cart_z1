@@ -43,7 +43,7 @@ SHOP_CURRENCY = env.str("SHOP_CURRENCY", default='EUR')
 MESSAGE = message
 
 # Increment on new releases
-VERSION = "v0.2.2"
+VERSION = "v0.2.3"
 
 # Sessions framework
 CART_SESSION_ID = env.str("CART_SESSION_ID", default='cart')
