@@ -108,7 +108,7 @@ def get_coupons(context):
     """
     coupons = context.request.session.get('coupon_list')
     cart = context['cart']
-    return { 'coupons': coupons, 'cart': cart }
+    return { 'coupons': coupons, 'cart': cart, 'currency': settings.SHOP_CURRENCY }
 
 @register.simple_tag
 def get_coupon_value_by_id(coupon_id):

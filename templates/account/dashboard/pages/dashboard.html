@@ -38,7 +38,7 @@
                 <span class="pl-4">{% field_name in_product 'price' %}: {{ in_product.price }}</span>
                 <span class="pl-4">{% field_name order_item 'quantity' %}: {{ order_item.quantity }}</span>
                 <span class="pl-4">{% field_name order_item 'quantity' %}: {{ order_item.quantity }}</span>
-                <span class="pl-4">Item Cost: {{ order_item.get_cost }}</span>
+                <span class="pl-4">#Cost: {{ order_item.get_cost }}</span>
               </div>
               {% endwith %}
             </div>
@@ -47,7 +47,7 @@
         <div class="flex flex-col mt-4 ml-4">
           {% if order.coupon %}
           <span>{% field_name order 'coupon' %}: {{ order.coupon }},</span>
-          <span>{% field_name order 'discount' %}: {{ order.discount }}%</span>
+          <span>{% field_name order 'discount' %}: {{ order.discount }}{% if order.is_percent %}%{% else %} {{ currency }}{% endif %}</span>
           {% endif %}
           <h4>Total cost: {{ order.get_total_cost|floatformat:2 }}</h4>
         </div>

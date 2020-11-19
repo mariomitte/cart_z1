@@ -92,11 +92,10 @@ class Cart(object):
                 pass
         return None
 
-    def add_coupon(self, coupon_id):
-        print("############## ADD COUPON TO CART ##############")
-        print(coupon_id)
+    def add_coupon(self, coupon_id, is_percent):
         self.coupon_id = coupon_id
-        self.session['coupon_list'][str(coupon_id)] = coupon_id
+        self.session['coupon_list'][str(coupon_id)] = {'coupon_id': coupon_id,
+                                                       'is_percent': is_percent,}
         self.get_total_price_after_discount()
         self.save()
 
@@ -105,8 +104,12 @@ class Cart(object):
         total_discount = Decimal(0)
         if self.coupon_list:
             for item in self.coupon_list:
-                discount_value = Coupon.objects.get(id=item).discount
-                discount.append((discount_value / Decimal(100)) * self.get_total_price())
+                coupon = Coupon.objects.get(id=item)
+                discount_value = coupon.discount
+                if coupon.is_percent:
+                    discount.append((discount_value / Decimal(100)) * self.get_total_price())
+                else:
+                    discount.append(discount_value)
             for item in discount:
                 total_discount += item
         return total_discount

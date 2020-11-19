@@ -12,6 +12,7 @@ class Coupon(models.Model):
                                                MaxValueValidator(100)])
     active = models.BooleanField()
     allow_combine = models.BooleanField(default=True)
+    is_percent = models.BooleanField(default=True, blank=True, null=True)
 
     def __str__(self):
         return self.code

@@ -33,12 +33,17 @@ def order_create(request):
 
     if user.is_anonymous:
         email = None
+    else:
+        email = user.email
 
     if request.method == 'POST':
         if user.is_anonymous:
             form_address_obj = ShippingAddressForm(data=request.POST)
             form_card_obj = CreditCardEditForm(data=request.POST)
         else:
+            customer = user.customer
+            fill_form_address = ShippingAddress.objects.get(email=customer.user.email)
+            fill_form_card = customer.creditcard_set.get(customer=customer)
             form_address_obj = ShippingAddressForm(data=request.POST, instance=fill_form_address)
             form_card_obj = CreditCardEditForm(data=request.POST, instance=fill_form_card)
 
@@ -70,8 +75,9 @@ def order_create(request):
             if cart.coupons:
                 total_discount = Decimal(0)
                 for item in cart.coupons:
-                    order.coupon = item
                     total_discount += item.discount
+                    order.coupon = item
+                    order.is_percent = item.is_percent
                 order.discount = total_discount
             order.save()
             messages.success(request, str(f"{settings.MESSAGE['MESSAGE_SUCCESS_NEW_ORDER']} {order.id}"))

@@ -62,6 +62,7 @@ class Order(models.Model):
     discount = models.IntegerField(default=0,
                                    validators=[MinValueValidator(0),
                                                MaxValueValidator(100)])
+    is_percent = models.BooleanField(default=True, blank=True, null=True)
 
     class Meta:
         ordering = ('-created',)
@@ -73,8 +74,10 @@ class Order(models.Model):
 
     def get_total_cost(self):
         total_cost = sum(item.get_cost() for item in self.items.all())
-        return total_cost - total_cost * \
-            (self.discount / Decimal(100))
+        if self.is_percent:
+            return total_cost - total_cost * (self.discount / Decimal(100))
+        else:
+            return total_cost - self.discount
 
 
 class OrderItem(models.Model):

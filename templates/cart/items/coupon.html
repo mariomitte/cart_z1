@@ -7,9 +7,9 @@
         {% for item in coupons %}
         {% get_coupon_value_by_id item as coupon %}
         <div class="items-baseline flex justify-between px-4">
-          <p>"{{ coupon.code }}" coupon ({{ coupon.discount }}% off)</p>
+          <p>"{{ coupon.code }}" coupon ({{ coupon.discount }}{% if coupon.is_percent %}%{% else %} {{ currency }}{% endif %} off)</p>
           <div class="flex flex-row items-center">
-            <p>- {{ currency }} {{ coupon.discount|floatformat:2 }}%</p>
+            <p>- {{ coupon.discount|floatformat:2 }}{% if coupon.is_percent %}%{% else %} {{ currency }}{% endif %}</p>
             <form action="{% url 'coupons:coupon_remove' item %}" method="POST" class="ml-4">
               {% csrf_token %}
               <input type="submit" value="Remove" class="button ~critical !high">
