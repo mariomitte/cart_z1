@@ -17,8 +17,15 @@ class Category(models.Model):
     """
     Store category model
     """
+    MY_CHOICES = (
+        ('sensors', 'Sensors'),
+        ('actuators', 'Actuators'),
+    )
     name = models.CharField(max_length=settings.WEBSITE_SLUG_MAX_LENGTH,
-                            db_index=True)
+                            choices=MY_CHOICES,
+                            db_index=True,
+                            blank=True,
+                            null=True)
     slug = models.SlugField(max_length=settings.WEBSITE_SLUG_MAX_LENGTH,
                             unique=True)
 

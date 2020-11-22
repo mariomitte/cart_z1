@@ -41,8 +41,8 @@
             <input type="submit" value="Remove" class="button ~critical !high">
           </form>
         </td>
-        <td>{{ currency }} {{ item.price }}</td>
-        <td>{{ currency }} {{ item.total_price }}</td>
+        <td>{{ currency }} {{ item.price|floatformat:2 }}</td>
+        <td>{{ currency }} {{ item.total_price|floatformat:2 }}</td>
       </tr>
       {% endwith %}
       {% endfor %}

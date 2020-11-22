@@ -29,9 +29,10 @@ class Cart(object):
         product_id = str(product.id)
         if product_id not in self.cart:
             self.cart[product_id] = {'quantity': 0,
-                                     'price': str(product.price)}
+                                      'price': str(product.price)}
         if override_quantity:
             self.cart[product_id]['quantity'] = quantity
+            self.cart[product_id]['price'] = str(self._change_product_price_on_quantity(product, quantity))
         else:
             self.cart[product_id]['quantity'] += quantity
         self.save()
@@ -102,6 +103,7 @@ class Cart(object):
     def get_discount(self):
         discount = []
         total_discount = Decimal(0)
+
         if self.coupon_list:
             for item in self.coupon_list:
                 coupon = Coupon.objects.get(id=item)
@@ -123,3 +125,24 @@ class Cart(object):
             del self.coupon_list[coupon_id]
         del self.coupon_id
         self.save()
+
+    def _change_product_price_on_quantity(self, product, quantity):
+        product_discount = Decimal(0)
+        has_delta = product.price * Decimal(settings.DISCOUNT_ON_QUANTITY_HAS_DISCOUNT_VALUE_MAIN)
+        # price = product.price - (has_delta * quantity)
+        sum = Decimal(0)
+        drop_in = Decimal(0)
+        price = product.price
+
+        if quantity > 1:
+            x = Decimal(settings.DISCOUNT_ON_QUANTITY_HAS_DISCOUNT_VALUE_MAIN)
+            y = Decimal(settings.DISCOUNT_ON_QUANTITY_HAS_DISCOUNT_VALUE_DELTA)
+            for item in range(1, quantity):
+                # drop_in += (x + y - (x * y))
+                drop_in += x
+                print("DROP IN #", drop_in)
+            price = product.price - (product.price * drop_in)
+
+        print("PRODUCT DISCOUNT #1", product_discount)
+        print("PRICE #", price)
+        return Decimal(price)
