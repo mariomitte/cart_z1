@@ -1,4 +1,4 @@
-from decimal import Decimal
+import decimal
 
 from django.db import models
 from django.conf import settings
@@ -14,6 +14,8 @@ from imagekit.processors import ResizeToFit
 # Image resize defaults
 thumbnail_size = settings.IMAGE_THUMBNAIL_SIZE
 preview_size = settings.IMAGE_PREVIEW_SIZE
+decimal.getcontext().prec = 2
+Decimal=decimal.Decimal
 
 
 class Customer(models.Model):
@@ -102,7 +104,10 @@ class OrderItem(models.Model):
         return str(self.id)
 
     def get_cost(self):
-        return self.price * self.quantity
+        price = self.price * self.quantity
+        if self.quantity > 1:
+            price = price - ((self.quantity - 1) * Decimal(settings.STORE_HAS_QUANTITY_DISCOUNT_VALUE))
+        return price
 
 class ShippingAddress(models.Model):
     """

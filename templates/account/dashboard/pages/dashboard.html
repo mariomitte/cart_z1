@@ -38,7 +38,7 @@
                 <span class="pl-4">{% field_name in_product 'price' %}: {{ in_product.price }}</span>
                 <span class="pl-4">{% field_name order_item 'quantity' %}: {{ order_item.quantity }}</span>
                 <span class="pl-4">{% field_name order_item 'quantity' %}: {{ order_item.quantity }}</span>
-                <span class="pl-4">#Cost: {{ order_item.get_cost }}</span>
+                <span class="pl-4">#Cost: {{ order_item.get_cost|floatformat:2 }}</span>
               </div>
               {% endwith %}
             </div>

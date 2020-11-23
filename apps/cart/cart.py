@@ -1,9 +1,12 @@
-from decimal import Decimal
+import decimal
 from django.conf import settings
 from django.contrib import messages
 
 from apps.shop.models import Product
 from apps.coupons.models import Coupon
+
+decimal.getcontext().prec = 2
+Decimal=decimal.Decimal
 
 
 class Cart(object):
@@ -21,6 +24,7 @@ class Cart(object):
         # store current applied coupon
         self.coupon_id = None
         self.coupon_list = self.session.get('coupon_list')
+        self.has_run = False
 
     def add(self, product, quantity=1, override_quantity=False):
         """
@@ -32,7 +36,6 @@ class Cart(object):
                                       'price': str(product.price)}
         if override_quantity:
             self.cart[product_id]['quantity'] = quantity
-            self.cart[product_id]['price'] = str(self._change_product_price_on_quantity(product, quantity))
         else:
             self.cart[product_id]['quantity'] += quantity
         self.save()
@@ -56,6 +59,13 @@ class Cart(object):
         Iterate over the items in the cart and get the products
         from the database.
         """
+        def create_total_price(price, quantity):
+            total_price = price * quantity
+            if self.has_run is True:
+                if item['quantity'] > 1:
+                    total_price = total_price - ((quantity - 1) * Decimal(settings.STORE_HAS_QUANTITY_DISCOUNT_VALUE))
+            return total_price
+
         product_ids = self.cart.keys()
         # get the product objects and add them to the cart
         products = Product.objects.filter(id__in=product_ids)
@@ -64,7 +74,8 @@ class Cart(object):
             cart[str(product.id)]['product'] = product
         for item in cart.values():
             item['price'] = Decimal(item['price'])
-            item['total_price'] = item['price'] * item['quantity']
+            item['total_price'] = create_total_price(item['price'], item['quantity'])
+            self.has_run = True
             yield item
 
     def __len__(self):
@@ -73,8 +84,17 @@ class Cart(object):
         """
         return sum(item['quantity'] for item in self.cart.values())
 
+    # def get_total_price(self):
+    #     return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+
     def get_total_price(self):
-        return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+        total_price = []
+        for item in self.cart.values():
+            has_price = item['price'] * item['quantity']
+            if item['quantity'] > 1:
+                has_price = has_price - ((item['quantity'] - 1) * Decimal(settings.STORE_HAS_QUANTITY_DISCOUNT_VALUE))
+            total_price.append(has_price)
+        return sum(total_price)
 
     def clear(self):
         # remove cart from session
@@ -125,24 +145,3 @@ class Cart(object):
             del self.coupon_list[coupon_id]
         del self.coupon_id
         self.save()
-
-    def _change_product_price_on_quantity(self, product, quantity):
-        product_discount = Decimal(0)
-        has_delta = product.price * Decimal(settings.DISCOUNT_ON_QUANTITY_HAS_DISCOUNT_VALUE_MAIN)
-        # price = product.price - (has_delta * quantity)
-        sum = Decimal(0)
-        drop_in = Decimal(0)
-        price = product.price
-
-        if quantity > 1:
-            x = Decimal(settings.DISCOUNT_ON_QUANTITY_HAS_DISCOUNT_VALUE_MAIN)
-            y = Decimal(settings.DISCOUNT_ON_QUANTITY_HAS_DISCOUNT_VALUE_DELTA)
-            for item in range(1, quantity):
-                # drop_in += (x + y - (x * y))
-                drop_in += x
-                print("DROP IN #", drop_in)
-            price = product.price - (product.price * drop_in)
-
-        print("PRODUCT DISCOUNT #1", product_discount)
-        print("PRICE #", price)
-        return Decimal(price)
