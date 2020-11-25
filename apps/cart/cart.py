@@ -1,12 +1,9 @@
-from decimal import Decimal
 from django.conf import settings
 from django.contrib import messages
 
 from apps.shop.models import Product
 from apps.coupons.models import Coupon
-
-# decimal.getcontext().prec = 2
-# Decimal=decimal.Decimal
+from apps.website.utils import Decimal
 
 
 class Cart(object):
@@ -72,6 +69,7 @@ class Cart(object):
                     if quantity >= Decimal(item['start_discount_from_quantity']):
                         # decimal.getcontext().prec = 2
                         total_price = Decimal(round(total_price - ((quantity - 1) * self.discount_from_store)))
+            print("HAS PRICE #", total_price)
             return total_price
 
         product_ids = self.cart.keys()

@@ -1,5 +1,3 @@
-import decimal
-
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
@@ -7,6 +5,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 from apps.shop.models import Product
 from apps.coupons.models import Coupon
+from apps.website.utils import Decimal
 
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFit
@@ -14,8 +13,6 @@ from imagekit.processors import ResizeToFit
 # Image resize defaults
 thumbnail_size = settings.IMAGE_THUMBNAIL_SIZE
 preview_size = settings.IMAGE_PREVIEW_SIZE
-decimal.getcontext().prec = 2
-Decimal=decimal.Decimal
 
 
 class Customer(models.Model):
