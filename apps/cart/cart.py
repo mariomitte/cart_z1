@@ -1,12 +1,12 @@
-import decimal
+from decimal import Decimal
 from django.conf import settings
 from django.contrib import messages
 
 from apps.shop.models import Product
 from apps.coupons.models import Coupon
 
-decimal.getcontext().prec = 2
-Decimal=decimal.Decimal
+# decimal.getcontext().prec = 2
+# Decimal=decimal.Decimal
 
 
 class Cart(object):
@@ -24,6 +24,7 @@ class Cart(object):
         # store current applied coupon
         self.coupon_id = None
         self.coupon_list = self.session.get('coupon_list')
+        self.discount_from_store = Decimal(settings.STORE_HAS_QUANTITY_DISCOUNT_VALUE)
         self.has_run = False
 
     def add(self, product, quantity=1, override_quantity=False):
@@ -31,9 +32,13 @@ class Cart(object):
         Add a product to the cart or update its quantity.
         """
         product_id = str(product.id)
+        start_discount_from_quantity = str(0)
         if product_id not in self.cart:
+            if product.has_discount_from_store is True:
+                start_discount_from_quantity = product.start_discount_from_quantity
             self.cart[product_id] = {'quantity': 0,
-                                      'price': str(product.price)}
+                                      'price': str(product.price),
+                                      'start_discount_from_quantity': product.start_discount_from_quantity,}
         if override_quantity:
             self.cart[product_id]['quantity'] = quantity
         else:
@@ -60,10 +65,13 @@ class Cart(object):
         from the database.
         """
         def create_total_price(price, quantity):
-            total_price = price * quantity
+            total_price = Decimal(price) * quantity
             if self.has_run is True:
-                if item['quantity'] > 1:
-                    total_price = total_price - ((quantity - 1) * Decimal(settings.STORE_HAS_QUANTITY_DISCOUNT_VALUE))
+                # product_price = product.price
+                if item['start_discount_from_quantity'] is not '0':
+                    if quantity >= Decimal(item['start_discount_from_quantity']):
+                        # decimal.getcontext().prec = 2
+                        total_price = Decimal(round(total_price - ((quantity - 1) * self.discount_from_store)))
             return total_price
 
         product_ids = self.cart.keys()
@@ -90,9 +98,10 @@ class Cart(object):
     def get_total_price(self):
         total_price = []
         for item in self.cart.values():
-            has_price = item['price'] * item['quantity']
-            if item['quantity'] > 1:
-                has_price = has_price - ((item['quantity'] - 1) * Decimal(settings.STORE_HAS_QUANTITY_DISCOUNT_VALUE))
+            has_price = Decimal(item['price']) * item['quantity']
+            if item['start_discount_from_quantity'] is not '0':
+                if item['quantity'] >= Decimal(item['start_discount_from_quantity']):
+                    has_price = Decimal(round(has_price - ((item['quantity'] - 1) * self.discount_from_store)))
             total_price.append(has_price)
         return sum(total_price)
 

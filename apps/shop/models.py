@@ -79,6 +79,8 @@ class Product(models.Model):
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=settings.PRODUCT_PRICE_MAX_DIGITS,
                                 decimal_places=2)
+    has_discount_from_store = models.BooleanField(default=False)
+    start_discount_from_quantity = models.PositiveIntegerField(default=2)
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
