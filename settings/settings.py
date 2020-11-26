@@ -42,7 +42,9 @@ IMAGE_PREVIEW_SIZE = env.int("IMAGE_PREVIEW_SIZE", 1000)
 SHOP_CURRENCY = env.str("SHOP_CURRENCY", default='EUR')
 MESSAGE = message
 STORE_HAS_QUANTITY_DISCOUNT_VALUE = env.float(
-    "STORE_HAS_QUANTITY_DISCOUNT_VALUE", default=5.00)
+    "STORE_HAS_QUANTITY_DISCOUNT_VALUE", default=4.99)
+STORE_ALLOW_SUCCESSIVE_DISCOUNTS = env.bool(
+    "STORE_ALLOW_SUCCESSIVE_DISCOUNTS", default=False)
 
 # Increment on new releases
 VERSION = "v0.2.3"
@@ -62,7 +64,7 @@ DEBUG = env.bool("DJANGO_DEBUG", default=False)
 
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[])
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'account:dashboard'
 LOGOUT_REDIRECT_URL = 'website:home'
 LOGIN_URL = 'account:login'
 LOGOUT_URL = 'account:logout'

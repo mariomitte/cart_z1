@@ -64,11 +64,13 @@ class Cart(object):
         def create_total_price(price, quantity):
             total_price = Decimal(price) * quantity
             if self.has_run is True:
-                # product_price = product.price
+                discount_at = Decimal(item['start_discount_from_quantity'])
                 if item['start_discount_from_quantity'] is not '0':
-                    if quantity >= Decimal(item['start_discount_from_quantity']):
-                        # decimal.getcontext().prec = 2
-                        total_price = Decimal(round(total_price - ((quantity - 1) * self.discount_from_store)))
+                    if settings.STORE_ALLOW_SUCCESSIVE_DISCOUNTS is False:
+                        if quantity >= discount_at:
+                            total_price = Decimal(round(total_price - ((quantity - 1) * self.discount_from_store)))
+                            if quantity > discount_at:
+                                total_price = total_price + ((quantity - discount_at) * self.discount_from_store)
             print("HAS PRICE #", total_price)
             return total_price
 
@@ -90,16 +92,17 @@ class Cart(object):
         """
         return sum(item['quantity'] for item in self.cart.values())
 
-    # def get_total_price(self):
-    #     return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
-
     def get_total_price(self):
         total_price = []
         for item in self.cart.values():
             has_price = Decimal(item['price']) * item['quantity']
             if item['start_discount_from_quantity'] is not '0':
-                if item['quantity'] >= Decimal(item['start_discount_from_quantity']):
-                    has_price = Decimal(round(has_price - ((item['quantity'] - 1) * self.discount_from_store)))
+                discount_at = int(item['start_discount_from_quantity'])
+                if settings.STORE_ALLOW_SUCCESSIVE_DISCOUNTS is False:
+                    if item['quantity'] >= discount_at:
+                        has_price = Decimal(round(has_price - ((item['quantity'] - 1) * self.discount_from_store)))
+                        if item['quantity'] > discount_at:
+                            has_price = has_price + ((item['quantity'] - discount_at) * self.discount_from_store)
             total_price.append(has_price)
         return sum(total_price)
 

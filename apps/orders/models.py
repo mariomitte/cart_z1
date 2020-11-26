@@ -104,8 +104,11 @@ class OrderItem(models.Model):
         price = self.price * self.quantity
         discount_from_store = Decimal(settings.STORE_HAS_QUANTITY_DISCOUNT_VALUE)
         if self.product.has_discount_from_store is True:
-            if self.quantity >= self.product.start_discount_from_quantity:
-                price = Decimal(round(price - ((self.quantity - 1) * discount_from_store)))
+            if settings.STORE_ALLOW_SUCCESSIVE_DISCOUNTS is False:
+                if self.quantity >= self.product.start_discount_from_quantity:
+                    price = Decimal(round(price - ((self.quantity - 1) * discount_from_store)))
+                    if self.quantity > self.product.start_discount_from_quantity:
+                        price = price + ((self.quantity - self.product.start_discount_from_quantity) * discount_from_store)
         return price
 
 class ShippingAddress(models.Model):
