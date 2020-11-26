@@ -29,7 +29,7 @@ class CustomerEditForm(forms.ModelForm):
 class CreditCardEditForm(forms.ModelForm):
     class Meta:
         model = CreditCard
-        exclude = ('customer', 'credit_card_expiration_date')
+        exclude = ('customer',)
         widgets = {
             'credit_card_number': forms.NumberInput(
                 attrs = {'placeholder': '0000000000000'},
@@ -43,4 +43,5 @@ class CreditCardEditForm(forms.ModelForm):
             'year_date': forms.NumberInput(
                 attrs = {'placeholder': '00'},
             ),
+            'credit_card_expiration_date': forms.HiddenInput()
         }

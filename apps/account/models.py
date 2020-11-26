@@ -44,11 +44,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_absolute_url(self):
         return reverse('account:dashboard')
 
-@receiver(signals.post_save, sender=User)
-def create_customer(sender, instance, created, **kwargs):
-    if created:
-        user = User.objects.get(id=instance.id)
-        customer = Customer.objects.create(user=user)
-        customer.creditcard_set.create(customer=customer)
-        address = ShippingAddress.objects.create(email=instance.email)
-        customer.save()
+# @receiver(signals.post_save, sender=User)
+# def create_customer(sender, instance, created, **kwargs):
+#     if created:
+#         user = User.objects.get(id=instance.id)
+#         customer = Customer.objects.create(user=user)
+#         customer.creditcard_set.create(customer=customer)
+#         address = ShippingAddress.objects.create(email=instance.email)
+#         customer.save()

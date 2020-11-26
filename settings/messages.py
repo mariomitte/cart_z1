@@ -12,6 +12,8 @@ message = {
         default="Please use Dashbord from menu to change your personal information."),
     'MESSAGE_WARNING_SHIPPING_ADDRESS_NOT_EXISTS': env.str("MESSAGE_WARNING_SHIPPING_ADDRESS_NOT_EXISTS",
         default="There are no details associated with your account. Have you created an address?"),
+    'MESSAGE_WARNING_ADDRESS_OR_CREDIT_CARD_EXISTS': env.str("MESSAGE_WARNING_ADDRESS_OR_CREDIT_CARD_EXISTS",
+        default="Please Login to create an order."),
     'MESSAGE_WARNING_CREDIT_CARD': env.str("MESSAGE_WARNING_CREDIT_CARD",
         default="You don't have any credit card record saved."),
 
