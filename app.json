@@ -1,83 +1,79 @@
 {
-    "name": "Checkout system",
-    "description": "On Heroku",
-    "keywords": ["node", "django", "web"],
-    "scripts": {
-        "postdeploy": "python manage.py migrate"
-    },
-    "addons": ["heroku-postgresql:hobby-dev"],
-    "env": {
-        "WEBSITE_MODEL_FIELD_LENGTH": {
-          "description": "Django Model Field length",
-          "value": 200
-        },
-        "IMAGE_THUMBNAIL_SIZE": {
-          "description": "Image thumbnail size",
-          "value": 300
-        },
-        "IMAGE_PREVIEW_SIZE": {
-          "description": "Image preview size",
-          "value": 1000
-        },
-        "SHOP_CURRENCY": {
-          "description": "Shop currency",
-          "value": "EUR"
-        },
-        "DJANGO_ALLOWED_HOSTS": {
-            "description": "Django ALLOWED_HOSTS setting, e.g.: .appname.herokuapp.com"
-        },
-        "DJANGO_SECRET_KEY": {
-            "description": "Django SECRET_KEY setting",
-            "generator": "secret"
-        },
-        "DJANGO_DEBUG": {
-            "description": "Use False in production",
-            "value": "False"
-        },
-        "DISABLE_COLLECTSTATIC": {
-            "description": "For whitenoise",
-            "value": "1"
-        },
-        "TIME_ZONE": {
-            "description": "Time zone",
-            "value": "Europe/Zagreb"
-        },
-        "DJANGO_ADMIN_URL": {
-            "description": "Django admin url",
-            "value": "admin/"
-        },
-        "DJANGO_ADMIN_NAME": {
-            "description": "Django admin name"
-        },
-        "DJANGO_ADMIN_EMAIL": {
-            "description": "Django admin email",
-        }
-    },
-    "formation": {
-        "web": {
-            "quantity": 1,
-            "size": "free"
-        },
-        "worker": {
-            "quantity": 1,
-            "size": "free"
-        }
-    },
-    "addons": [
-        {
-            "plan": "heroku-postgresql:hobby-dev",
-            "options": {
-                "version": "10"
-            },
-            "as": "DATABASE"
-        }
-    ],
-    "buildpacks": [
-        {
-            "url": "heroku/nodejs"
-        },
-        {
-            "url": "heroku/python"
-        }
-    ]
+	"name": "Checkout system",
+	"description": "On Heroku",
+	"keywords": ["node", "django", "web"],
+	"scripts": {
+		"postdeploy": "python manage.py migrate"
+	},
+	"env": {
+		"WEBSITE_MODEL_FIELD_LENGTH": {
+			"description": "Django Model Field length",
+			"value": 200
+		},
+		"IMAGE_THUMBNAIL_SIZE": {
+			"description": "Image thumbnail size",
+			"value": 300
+		},
+		"IMAGE_PREVIEW_SIZE": {
+			"description": "Image preview size",
+			"value": 1000
+		},
+		"SHOP_CURRENCY": {
+			"description": "Shop currency",
+			"value": "EUR"
+		},
+		"DJANGO_ALLOWED_HOSTS": {
+			"description": "Django ALLOWED_HOSTS setting, e.g.: .appname.herokuapp.com"
+		},
+		"DJANGO_SECRET_KEY": {
+			"description": "Django SECRET_KEY setting",
+			"generator": "secret"
+		},
+		"DJANGO_DEBUG": {
+			"description": "Use False in production",
+			"value": "False"
+		},
+		"DISABLE_COLLECTSTATIC": {
+			"description": "For whitenoise",
+			"value": "1"
+		},
+		"TIME_ZONE": {
+			"description": "Time zone",
+			"value": "Europe/Zagreb"
+		},
+		"DJANGO_ADMIN_URL": {
+			"description": "Django admin url",
+			"value": "admin/"
+		},
+		"DJANGO_ADMIN_NAME": {
+			"description": "Django admin name"
+		},
+		"DJANGO_ADMIN_EMAIL": {
+			"description": "Django admin email"
+		}
+	},
+	"formation": {
+		"web": {
+			"quantity": 1,
+			"size": "free"
+		},
+		"worker": {
+			"quantity": 1,
+			"size": "free"
+		}
+	},
+	"addons": [{
+		"plan": "heroku-postgresql:hobby-dev",
+		"options": {
+			"version": "10"
+		},
+		"as": "DATABASE"
+	}],
+	"buildpacks": [{
+			"url": "heroku/nodejs"
+		},
+		{
+			"url": "heroku/python"
+		}
+	]
 }
