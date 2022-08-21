@@ -50,6 +50,46 @@
 		},
 		"DJANGO_ADMIN_EMAIL": {
 			"description": "Django admin email"
+		},
+		"AWS_ACCESS_KEY_ID": {
+			"description": "AWS_ACCESS_KEY_ID::"
+		},
+		"AWS_SECRET_ACCESS_KEY": {
+			"description": "AWS_SECRET_ACCESS_KEY::"
+		},
+		"AWS_STORAGE_BUCKET_NAME": {
+			"description": "AWS_STORAGE_BUCKET_NAME::"
+		},
+		"DATABASE_URL": {
+			"description": "DATABASE_URL::"
+		},
+		"EMAIL_HOST": {
+			"description": "EMAIL_HOST::"
+		},
+		"EMAIL_HOST_PASSWORD": {
+			"description": "EMAIL_HOST_PASSWORD::"
+		},
+		"EMAIL_HOST_USER": {
+			"description": "EMAIL_HOST_USER::"
+		},
+		"EMAIL_PORT": {
+			"description": "EMAIL_PORT::"
+		},
+		"EMAIL_USE_TLS": {
+			"description": "EMAIL_PORT::",
+			"value": "True"
+		},
+		"SENDGRID_API_KEY": {
+			"description": "SENDGRID_API_KEY::"
+		},
+		"SENDGRID_PASSWORD": {
+			"description": "SENDGRID_PASSWORD::"
+		},
+		"SENDGRID_USERNAME": {
+			"description": "SENDGRID_USERNAME::"
+		},
+		"SENTRY_DSN": {
+			"description": "SENTRY_DSN::"
 		}
 	},
 	"formation": {
