@@ -62,7 +62,7 @@
 			"size": "free"
 		}
 	},
-	"image": "heroku/builder",
+	"image": "heroku/nodejs",
 	"addons": [{
 		"plan": "heroku-postgresql:hobby-dev",
 		"options": {
